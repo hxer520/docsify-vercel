@@ -1,6 +1,6 @@
 <!-- _navbar.md -->
 
-* 链接到我
+* 社群工具包
   * [博客园地址](https://www.cnblogs.com/Can-daydayup/)
   * [Github地址](https://github.com/YSGStudyHards)
   * [知乎地址](https://www.zhihu.com/people/ysgdaydayup)
@@ -8,7 +8,7 @@
   * [Gitee地址](https://gitee.com/ysgdaydayup)
 
 
-* 友情链接
+* 团子家族
   * [Docsify](https://docsify.js.org/#/)
   * [博客园](https://www.cnblogs.com/)
   * [Markdown 基本语法](https://markdown.com.cn/basic-syntax/)
