@@ -8,6 +8,5 @@
 - 告别传统方法
 - 众多营销套路
 
-
 [开始使用](/README.md)
-[使用教程](ProjectDocs/Docsify部署教程.md)
+[使用教程](/README.md)
