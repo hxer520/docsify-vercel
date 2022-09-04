@@ -13,6 +13,9 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <!-- 默认主题 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
+    <!-- 百度统计 -->
+
+        
 </head>
 
 <body>
@@ -36,7 +39,8 @@
             subMaxLevel: 4,
             // 小屏设备下合并导航栏到侧边栏
             mergeNavbar: true,
-        }
+            // 切换页面后是否自动跳转到页面顶部
+            auto2top: true,
     </script>
     <script>
         // 搜索配置(url：https://docsify.js.org/#/zh-cn/plugins?id=%e5%85%a8%e6%96%87%e6%90%9c%e7%b4%a2-search)
@@ -57,6 +61,8 @@
             }
         }
     </script>
+    <!-- docsify底部上一篇下一篇 -->
+    <script src="//cdn.jsdelivr.net/npm/docsify-pagination/dist/docsify-pagination.min.js"></script>
     <!-- docsify的js依赖 -->
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/docsify.min.js"></script>
     <!-- emoji表情支持 -->
@@ -67,6 +73,24 @@
     <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
     <!--在所有的代码块上添加一个简单的Click to copy按钮来允许用户从你的文档中轻易地复制代码-->
     <script src="//cdn.jsdelivr.net/npm/docsify-copy-code/dist/docsify-copy-code.min.js"></script>
+    <!-- 字数统计 -->
+    <script src="//unpkg.com/docsify-count/dist/countable.js"></script>
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+          var hm = document.createElement("script");
+          hm.src = "https://hm.baidu.com/hm.js?725779a070cf560bfa306cac3956755c";
+          var s = document.getElementsByTagName("script")[0]; 
+          s.parentNode.insertBefore(hm, s);
+        })();
+        </script>
+    <!-- 脚本文件 -->
+     <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+    <!-- 样式文件 -->
+    link
+    rel="stylesheet"
+    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+/>
 </body>
 
 </html>

@@ -1,5 +1,6 @@
 {
   "showFrontmatter": true,
   "strictLineBreaks": true,
-  "showLineNumber": true
+  "showLineNumber": true,
+  "alwaysUpdateLinks": true
 }
