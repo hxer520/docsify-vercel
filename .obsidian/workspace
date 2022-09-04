@@ -9,7 +9,7 @@
         "state": {
           "type": "markdown",
           "state": {
-            "file": "_coverpage.md",
+            "file": "docs/1.种子客户该如何筛选.md",
             "mode": "source",
             "source": false
           }
@@ -77,7 +77,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "_coverpage.md",
+                "file": "docs/1.种子客户该如何筛选.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -94,7 +94,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "_coverpage.md",
+                "file": "docs/1.种子客户该如何筛选.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -117,7 +117,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "_coverpage.md"
+                "file": "docs/1.种子客户该如何筛选.md"
               }
             }
           },
@@ -138,11 +138,11 @@
   },
   "active": "70de4940c608488b",
   "lastOpenFiles": [
-    "_sidebar.md",
+    "docs/测试能否多个git.md",
     "_coverpage.md",
+    "_sidebar.md",
     "README.md",
     "docs/1.种子客户该如何筛选.md",
-    "docs/测试能否多个git.md",
     "docs/README.md",
     "_navbar.md",
     "BRAT-log.md",
