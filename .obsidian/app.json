@@ -5,7 +5,7 @@
   "alwaysUpdateLinks": true,
   "promptDelete": false,
   "newLinkFormat": "relative",
-  "newFileLocation": "folder",
+  "newFileLocation": "current",
   "newFileFolderPath": "docs",
   "attachmentFolderPath": "./attachiments",
   "showUnsupportedFiles": true,
