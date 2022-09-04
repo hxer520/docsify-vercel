@@ -13,7 +13,8 @@
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
     <!-- 默认主题 -->
     <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify/lib/themes/vue.css">
-    <!-- 百度统计 -->
+    <!-- 评论 -->
+    <link rel="stylesheet" href="https://unpkg.com/@waline/client@v2/dist/waline.css"/>
 
         
 </head>
@@ -84,10 +85,8 @@
 
     <!-- waline评论 -->
     <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
-    <link
-    rel="stylesheet"
-    href="https://unpkg.com/@waline/client@v2/dist/waline.css"
-    />
+    <!--导入插件-->
+    <script src="https://unpkg.com/docsify-waline@2/docsify-waline.min.js"></script>
     <script>
         window.$docsify = {
             count: {
@@ -104,8 +103,7 @@
         }
         </script>
 
-<!--导入插件-->
-<script src="https://unpkg.com/docsify-waline@2/docsify-waline.min.js"></script>
+
 </body>
 
 </html>
