@@ -84,6 +84,30 @@
           s.parentNode.insertBefore(hm, s);
         })();
         </script>
+        <!-- waline评论 -->
+        <script src="https://unpkg.com/@waline/client@v2/dist/waline.js"></script>
+        <link
+        rel="stylesheet"
+        href="https://unpkg.com/@waline/client@v2/dist/waline.css"
+        />
+        <script>
+        window.$docsify = {
+            count: {
+            language: "chinese", // default:english|chinese
+            },
+            waline: {
+            // 必填。例子：https://your-domain.vercel.app
+            serverURL: "waline-vercel-self.vercel.app",
+            // 开启浏览量统计
+            pageview: true,
+            // ...
+            // 不支持 el 和 path 参数自定义
+            },
+        };
+        </script>
+
+<!--导入插件-->
+<script src="https://unpkg.com/docsify-waline@2/docsify-waline.min.js"></script>
 </body>
 
 </html>
