@@ -139,6 +139,7 @@
   "active": "70de4940c608488b",
   "lastOpenFiles": [
     "docs/1.种子客户该如何筛选.md",
+    "docs/测试能否多个git.md",
     "README.md",
     "_coverpage.md",
     "docs/README.md",
@@ -146,7 +147,6 @@
     "_navbar.md",
     "BRAT-log.md",
     "docsify/_coverpage.md",
-    "docsify/_sidebar.md",
-    "docsify/_navbar.md"
+    "docsify/_sidebar.md"
   ]
 }

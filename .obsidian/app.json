@@ -3,5 +3,11 @@
   "strictLineBreaks": true,
   "showLineNumber": true,
   "alwaysUpdateLinks": true,
-  "promptDelete": false
+  "promptDelete": false,
+  "newLinkFormat": "relative",
+  "newFileLocation": "folder",
+  "newFileFolderPath": "docs",
+  "attachmentFolderPath": "./attachiments",
+  "showUnsupportedFiles": true,
+  "useMarkdownLinks": true
 }
