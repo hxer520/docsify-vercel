@@ -138,15 +138,15 @@
   },
   "active": "70de4940c608488b",
   "lastOpenFiles": [
-    "docs/1.种子客户该如何筛选.md",
-    "_sidebar.md",
-    "_navbar.md",
-    "BRAT-log.md",
+    "docs/README.md",
     "README.md",
+    "_sidebar.md",
     "_coverpage.md",
+    "_navbar.md",
+    "docs/1.种子客户该如何筛选.md",
+    "BRAT-log.md",
     "docsify/_coverpage.md",
     "docsify/_sidebar.md",
-    "docsify/_navbar.md",
-    "docs/README.md"
+    "docsify/_navbar.md"
   ]
 }
