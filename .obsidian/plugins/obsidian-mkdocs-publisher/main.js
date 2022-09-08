@@ -494,12 +494,13 @@ var en_us_default = {
   folderNoteDesc: 'Rename files to "index.md" if it has the same name as their parent folder/category (also works if the note is out of the folder).',
   internalsLinks: "Internals Links",
   internalsLinksDesc: "Convert the internal link in shared file to match the folder settings",
+  linkDesc: 'You can prevent links to be converted and keep the alt text (or filename) by using the frontmatter key "links" with the value "false".',
   wikilinks: "Wikilinks",
-  wikilinksDesc: "Convert Wikilinks to MDlinks, without changing the contents",
+  wikilinksDesc: 'Convert Wikilinks to MDlinks, without changing the contents. This option can be overridden by the frontmatter key "mdlinks".',
   hardBreakTitle: "Markdown hard line break",
-  hardBreakDesc: "Add a markdown hard line break (double whitespace) after each line.",
+  hardBreakDesc: 'Add a markdown hard line break (double whitespace) after each line. This settings can be overridden by the frontmatter key "hardbreak".',
   headerDataview: "Dataview",
-  headerDataviewDesc: "Convert dataview to markdown.",
+  headerDataviewDesc: 'Convert dataview to markdown. This settings can be overridden by the frontmatter key "dataview".',
   useFrontmatterTitle: "Use frontmatter title",
   useFrontmatterTitleDesc: 'Use frontmatter "title" field instead of the file name.',
   censorTextHeader: "Text replacer",
@@ -518,9 +519,9 @@ var en_us_default = {
   dataviewExcludeDesc: "This will exclude value from being converted. Separate fields with a comma.",
   embed: "Embed",
   transferImage: "Transfer image",
-  transferImageDesc: "Send image embedded in a file to github",
+  transferImageDesc: 'Send image embedded in a file to github. This option can be overridden by the frontmatter key "image".',
   transferEmbeddedNotes: "Transfer embedded notes",
-  transferEmbeddedNotesDesc: "Send embedded notes in a shared file to github. Only shared files will be send!",
+  transferEmbeddedNotesDesc: 'Send embedded notes in a shared file to github. Only shared files will be send! This option can be overridden by the frontmatter key "embed".',
   defaultImageFolder: "Default image folder",
   defaultImageFolderDesc: "To use a folder different from default",
   githubActionName: "Github action name",
@@ -716,12 +717,13 @@ var fr_fr_default = {
   folderNoteDesc: `Renommer les fichiers en "index.md" s'il porte le m\xEAme nom que leur dossier/cat\xE9gorie parent (fonctionne aussi si la note est \xE0 l'ext\xE9rieur du dossier).`,
   internalsLinks: "Liens internes",
   internalsLinksDesc: "Convertir le lien interne dans le fichier partag\xE9 pour qu'il corresponde aux param\xE8tres du dossier.",
+  linkDesc: 'Vous pouvez emp\xEAcher la conversion des liens et conserver le texte alt (ou le nom du fichier) en utilisant la cl\xE9 frontmatter "links" avec la valeur "false".',
   wikilinks: "Wikilinks",
-  wikilinksDesc: "Convertir les liens Wikilinks en liens markdown, sans en modifier le contenu.",
+  wikilinksDesc: 'Convertir les liens Wikilinks en liens markdown, sans en modifier le contenu. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "mdlinks".',
   hardBreakTitle: "Saut de ligne strict",
-  hardBreakDesc: "Ajoutez un retour \xE0 la ligne Markdown (double espace) apr\xE8s chaque ligne.",
+  hardBreakDesc: 'Ajoutez un retour \xE0 la ligne Markdown (double espace) apr\xE8s chaque ligne. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "hardbreak".',
   headerDataview: "Dataview",
-  headerDataviewDesc: "Convertir dataview en markdown.",
+  headerDataviewDesc: 'Convertir dataview en markdown. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "dataview".',
   useFrontmatterTitle: 'Utiliser la cl\xE9 frontmatter "title"',
   useFrontmatterTitleDesc: 'Utilisez le champ "title" du frontmatter (\xE0 la place du nom du fichier) pour g\xE9n\xE9rer le chemin du fichier.',
   censorTextHeader: "Replacement de texte",
@@ -740,9 +742,9 @@ var fr_fr_default = {
   dataviewExcludeDesc: "Exclure la valeur de la conversion. S\xE9parez les valeurs par une virgule.",
   embed: "Transclusion",
   transferImage: "Transf\xE9rer les images",
-  transferImageDesc: "Envoyer les images int\xE9gr\xE9es dans un fichier dans le d\xE9p\xF4t.",
+  transferImageDesc: 'Envoyer les images int\xE9gr\xE9es dans un fichier dans le d\xE9p\xF4t. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "image".',
   transferEmbeddedNotes: "Transf\xE9rer les notes transclues",
-  transferEmbeddedNotesDesc: "Envoyez des notes transcluent dans un fichier partag\xE9 dans le d\xE9p\xF4t. Seuls les fichiers partag\xE9s seront envoy\xE9s !",
+  transferEmbeddedNotesDesc: 'Envoyez des notes transcluent dans un fichier partag\xE9 dans le d\xE9p\xF4t. Seuls les fichiers partag\xE9s seront envoy\xE9s ! Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "embed".',
   defaultImageFolder: "Dossier d'images par d\xE9faut",
   defaultImageFolderDesc: "Pour utiliser un dossier diff\xE9rent de celui par d\xE9faut pour les images.",
   githubActionName: "Nom de l'action GitHub",
@@ -1069,6 +1071,7 @@ var MkdocsSettingsTab = class extends import_obsidian2.PluginSettingTab {
       }));
     });
     containerEl.createEl("h5", { text: t("linkHeader") });
+    containerEl.createEl("p", { text: t("linkDesc") });
     const folderNoteSettings = new import_obsidian2.Setting(containerEl).setName(t("folderNote")).setClass("obs-git-publisher").setDesc(t("folderNoteDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.folderNote).onChange((value) => __async(this, null, function* () {
         this.plugin.settings.folderNote = value;
@@ -1214,7 +1217,7 @@ function createRelativePath(sourceFile, targetFile, metadata, settings, vault) {
   if (targetFile.linked.extension === "md" && (!frontmatter || !frontmatter[settings.shareKey] || frontmatter[settings.shareKey] === false)) {
     return targetFile.altText;
   }
-  const targetPath = targetFile.linked.extension === "md" ? getReceiptFolder(targetFile.linked, settings, metadata, vault) : getImageLinkOptions(targetFile.linked, settings);
+  const targetPath = targetFile.linked.extension === "md" ? getReceiptFolder(targetFile.linked, settings, metadata, vault) : getImageLinkOptions(targetFile.linked, settings, frontmatter);
   const sourceList = sourcePath.split("/");
   const targetList = targetPath.split("/");
   const diffSourcePath = sourceList.filter((x) => !targetList.includes(x));
@@ -1291,15 +1294,15 @@ function getReceiptFolder(file, settings, metadataCache, vault) {
     return path;
   }
 }
-function getImageLinkOptions(file, settings) {
-  let fileDefaultPath = file.path;
-  const fileName = file.name;
-  if (settings.defaultImageFolder.length > 0) {
-    fileDefaultPath = settings.defaultImageFolder + "/" + fileName;
+function getImageLinkOptions(file, settings, sourceFrontmatter) {
+  if (sourceFrontmatter == null ? void 0 : sourceFrontmatter.imageLink) {
+    return sourceFrontmatter.imageLink.toString().replace(/\/$/, "") + "/" + file.name;
+  } else if (settings.defaultImageFolder.length > 0) {
+    return settings.defaultImageFolder + "/" + file.name;
   } else if (settings.folderDefaultName.length > 0) {
-    fileDefaultPath = settings.folderDefaultName + "/" + fileName;
+    return settings.folderDefaultName + "/" + file.name;
   }
-  return fileDefaultPath;
+  return file.path;
 }
 
 // plugin/src/utils.ts
@@ -2403,10 +2406,11 @@ function checkIndexFiles(octokit, settings, path) {
 // plugin/contents_conversion/convertText.ts
 var import_obsidian6 = require("obsidian");
 var import_obsidian_dataview = __toESM(require_lib());
-function addHardLineBreak(text, settings) {
+function addHardLineBreak(text, settings, frontmatter) {
   try {
     text = text.replace(/^\s*\\\s*$/gmi, "<br/>");
-    if (settings.hardBreak) {
+    const hardBreak = (frontmatter == null ? void 0 : frontmatter.hardBreak) !== void 0 ? frontmatter == null ? void 0 : frontmatter.hardBreak : settings.hardBreak;
+    if (hardBreak) {
       text = text.replace(/\n/gm, "  \n");
     }
     return text;
@@ -2506,7 +2510,7 @@ function convertInlineDataview(text, settings, sourceFile) {
     return text;
   });
 }
-function convertDataviewQueries(text, path, settings, vault, metadataCache, sourceFile) {
+function convertDataviewQueries(text, path, settings, vault, metadataCache, frontmatter, sourceFile) {
   return __async(this, null, function* () {
     let replacedText = text;
     const dataviewRegex = new RegExp("```dataview(.+?)```", "gsm");
@@ -2514,14 +2518,15 @@ function convertDataviewQueries(text, path, settings, vault, metadataCache, sour
     const matches = text.matchAll(dataviewRegex);
     if (!matches)
       return;
+    const settingsDataview = frontmatter.dataview !== void 0 ? frontmatter == null ? void 0 : frontmatter.dataview : settings.convertDataview;
     for (const queryBlock of matches) {
       try {
         const block = queryBlock[0];
         const query = queryBlock[1];
-        let md = settings.convertDataview ? yield dvApi.tryQueryMarkdown(query, path) : "";
+        let md = settingsDataview ? yield dvApi.tryQueryMarkdown(query, path) : "";
         const dataviewPath = getDataviewPath(md, settings, vault);
         md = convertLinkCitation(md, settings, dataviewPath, metadataCache, sourceFile, vault);
-        md = convertWikilinks(md, settings, dataviewPath);
+        md = convertWikilinks(md, frontmatter, settings, dataviewPath);
         replacedText = replacedText.replace(block, md);
       } catch (e) {
         noticeLog(e, settings);
@@ -2532,28 +2537,46 @@ function convertDataviewQueries(text, path, settings, vault, metadataCache, sour
     return replacedText;
   });
 }
-function convertWikilinks(fileContent, settings, linkedFiles) {
-  if (!settings.convertWikiLinks) {
+function convertWikilinks(fileContent, frontmatter, settings, linkedFiles) {
+  if (!settings.convertWikiLinks && !(frontmatter == null ? void 0 : frontmatter.mdlinks) && (frontmatter == null ? void 0 : frontmatter.links)) {
     return fileContent;
   }
-  const wikiRegex = /\[\[.*?\]\]/g;
+  const wikiRegex = /!?\[\[.*?\]\]/g;
   const wikiMatches = fileContent.match(wikiRegex);
   if (wikiMatches) {
     const fileRegex = /(\[\[).*?([\]|])/;
     for (const wikiMatch of wikiMatches) {
       const fileMatch = wikiMatch.match(fileRegex);
+      const isEmbed = wikiMatch.startsWith("!") ? "!" : "";
       if (fileMatch) {
+        let linkCreator = wikiMatch;
         const fileName = fileMatch[0].replaceAll("[", "").replaceAll("|", "").replaceAll("]", "");
         const linkedFile = linkedFiles.find((item) => item.linkFrom === fileName);
         if (linkedFile) {
           const altText = linkedFile.altText.length > 0 ? linkedFile.altText : linkedFile.linked.extension === "md" ? linkedFile.linked.basename : "";
-          const linkCreator = `[${altText}](${encodeURI(linkedFile.linkFrom)})`;
+          if (settings.convertWikiLinks || (frontmatter == null ? void 0 : frontmatter.mdlinks)) {
+            linkCreator = `${isEmbed}[${altText}](${encodeURI(linkedFile.linkFrom)})`;
+          }
+          if ((frontmatter == null ? void 0 : frontmatter.links) === false && linkedFile.linked.extension === "md") {
+            linkCreator = altText;
+          }
+          if ((frontmatter.image === false || !settings.embedImage) && linkedFile.linked.extension.match("png|jpg|jpeg|gif|svg")) {
+            linkCreator = "";
+          }
           fileContent = fileContent.replace(wikiMatch, linkCreator);
         } else if (!fileName.startsWith("http")) {
           const altMatch = wikiMatch.match(/(\|).*(]])/);
           const altCreator = fileName.split("/");
           const altLink = creatorAltLink(altMatch, altCreator, fileName.split(".").at(-1));
-          const linkCreator = `[${altLink}](${encodeURI(fileName.trim())})`;
+          if (settings.convertWikiLinks || (frontmatter == null ? void 0 : frontmatter.mdlinks)) {
+            linkCreator = `${isEmbed}[${altLink}](${encodeURI(fileName.trim())})`;
+          }
+          if ((frontmatter == null ? void 0 : frontmatter.links) === false && fileName.match("md$")) {
+            linkCreator = altLink;
+          }
+          if ((frontmatter.image === false || !settings.embedImage) && fileName.match("(png|jpg|jpeg|gif|svg)$")) {
+            linkCreator = "";
+          }
           fileContent = fileContent.replace(wikiMatch, linkCreator);
         }
       }
@@ -2621,7 +2644,7 @@ var Publisher = class {
     this.octokit = octokit;
     this.plugin = plugin;
   }
-  statusBarForEmbed(linkedFiles, fileHistory, ref = "main", deepScan) {
+  statusBarForEmbed(linkedFiles, fileHistory, ref = "main", deepScan, sourceFrontmatter) {
     return __async(this, null, function* () {
       if (linkedFiles.length > 0) {
         if (linkedFiles.length > 1) {
@@ -2632,7 +2655,7 @@ var Publisher = class {
               fileHistory.push(image);
               yield this.publish(image, false, ref, fileHistory, true);
             } else {
-              yield this.uploadImage(image, ref);
+              yield this.uploadImage(image, ref, sourceFrontmatter);
             }
             statusBar.increment();
           }
@@ -2643,7 +2666,7 @@ var Publisher = class {
             fileHistory.push(embed);
             yield this.publish(embed, false, ref, fileHistory, true);
           } else {
-            yield this.uploadImage(embed, ref);
+            yield this.uploadImage(embed, ref, sourceFrontmatter);
           }
         }
       }
@@ -2663,16 +2686,16 @@ var Publisher = class {
         const embedFiles = shareFiles.getEmbed(file);
         const linkedFiles = shareFiles.getLinkedImageAndFiles(file);
         let text = yield addInlineTags(this.settings, file, this.metadataCache, this.plugin.app);
-        text = yield convertDataviewQueries(text, file.path, this.settings, this.vault, this.metadataCache, file);
+        text = yield convertDataviewQueries(text, file.path, this.settings, this.vault, this.metadataCache, frontmatter, file);
         text = yield convertInlineDataview(text, this.settings, file);
-        text = addHardLineBreak(text, this.settings);
+        text = addHardLineBreak(text, this.settings, frontmatter);
         text = convertLinkCitation(text, this.settings, linkedFiles, this.metadataCache, file, this.vault);
-        text = convertWikilinks(text, this.settings, linkedFiles);
+        text = convertWikilinks(text, frontmatter, this.settings, linkedFiles);
         text = censorText(text, this.settings);
         const path = getReceiptFolder(file, this.settings, this.metadataCache, this.vault);
         noticeLog(`Upload ${file.name}:${path} on ${this.settings.githubName}/${this.settings.githubRepo}:${ref}`, this.settings);
         yield this.uploadText(file.path, text, path, file.name, ref);
-        yield this.statusBarForEmbed(embedFiles, fileHistory, ref, deepScan);
+        yield this.statusBarForEmbed(embedFiles, fileHistory, ref, deepScan, frontmatter);
         if (autoclean && this.settings.autoCleanUp) {
           yield deleteFromGithub(true, this.settings, this.octokit, ref, shareFiles);
         }
@@ -2714,17 +2737,17 @@ var Publisher = class {
           payload.sha = response.data.sha;
         }
       } catch (e) {
-        console.log("The 404 error is normal ! It means that the file does not exist yet. Don't worry \u2764\uFE0F.");
+        noticeLog("The 404 error is normal ! It means that the file does not exist yet. Don't worry \u2764\uFE0F.", this.settings);
       }
       payload.message = `Update note ${title}`;
       yield octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", payload);
     });
   }
-  uploadImage(imageFile, ref = "main") {
+  uploadImage(imageFile, ref = "main", sourcefrontmatter) {
     return __async(this, null, function* () {
       const imageBin = yield this.vault.readBinary(imageFile);
       const image64 = (0, import_obsidian7.arrayBufferToBase64)(imageBin);
-      const path = getImageLinkOptions(imageFile, this.settings);
+      const path = getImageLinkOptions(imageFile, this.settings, sourcefrontmatter);
       yield this.upload(imageFile.path, image64, path, "", ref);
     });
   }
@@ -2802,14 +2825,14 @@ var FilesManagement = class extends Publisher {
     for (const file of files) {
       const fileExtension = file.extension;
       if (fileExtension.match(/(png|jpe?g|svg|bmp|gif)$/i)) {
-        const filepath = getImageLinkOptions(file, this.settings);
+        const filepath = getImageLinkOptions(file, this.settings, null);
         allFileWithPath.push({
           converted: filepath,
           real: file.path
         });
       } else if (file.extension == "md") {
         const frontMatter = this.metadataCache.getCache(file.path).frontmatter;
-        if (frontMatter && frontMatter[shareKey] === true && file.extension === "md") {
+        if (frontMatter && frontMatter[shareKey] === true) {
           const filepath = getReceiptFolder(file, this.settings, this.metadataCache, this.vault);
           allFileWithPath.push({
             converted: filepath,
@@ -2868,17 +2891,19 @@ var FilesManagement = class extends Publisher {
   }
   getEmbed(file) {
     const embedCaches = this.metadataCache.getCache(file.path).embeds;
+    const frontmatterSourceFile = this.metadataCache.getFileCache(file).frontmatter;
     const imageList = [];
     if (embedCaches != void 0) {
       for (const embed of embedCaches) {
         try {
           const imageLink = this.metadataCache.getFirstLinkpathDest(embed.link, file.path);
-          if (imageLink.name.match(/(png|jpe?g|svg|bmp|gif)$/i) && this.settings.embedImage) {
+          const transferImage = frontmatterSourceFile.image !== void 0 ? frontmatterSourceFile.image : this.settings.embedImage;
+          if (imageLink.name.match(/(png|jpe?g|svg|bmp|gif)$/i) && transferImage) {
             imageList.push(imageLink);
           } else if (imageLink.extension === "md") {
             const sharedKey = this.settings.shareKey;
             const frontmatter = this.metadataCache.getFileCache(imageLink).frontmatter;
-            if (frontmatter && frontmatter[sharedKey] && !this.checkExcludedFolder(imageLink) && this.settings.embedNotes) {
+            if (frontmatter && frontmatter[sharedKey] && !this.checkExcludedFolder(imageLink) && transferImage) {
               imageList.push(imageLink);
             }
           }
