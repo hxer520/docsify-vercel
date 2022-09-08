@@ -308,7 +308,7 @@ var require_lib = __commonJS({
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     require("obsidian");
-    var getAPI2 = (app2) => {
+    var getAPI3 = (app2) => {
       var _a;
       if (app2)
         return (_a = app2.plugins.plugins.dataview) === null || _a === void 0 ? void 0 : _a.api;
@@ -316,7 +316,7 @@ var require_lib = __commonJS({
         return window.DataviewAPI;
     };
     var isPluginEnabled = (app2) => app2.plugins.enabledPlugins.has("dataview");
-    exports.getAPI = getAPI2;
+    exports.getAPI = getAPI3;
     exports.isPluginEnabled = isPluginEnabled;
   }
 });
@@ -324,10 +324,10 @@ var require_lib = __commonJS({
 // plugin/main.ts
 var main_exports = {};
 __export(main_exports, {
-  default: () => MkdocsPublication
+  default: () => GithubPublisher
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 
 // plugin/settings.ts
 var import_obsidian2 = require("obsidian");
@@ -365,7 +365,9 @@ var DEFAULT_SETTINGS = {
   censorText: [],
   inlineTags: false,
   dataviewFields: [],
-  excludeDataviewValue: []
+  excludeDataviewValue: [],
+  metadataFileFields: [],
+  frontmatterTitleKey: "title"
 };
 
 // plugin/settings/style.ts
@@ -486,6 +488,8 @@ var en_us_default = {
   frontmatterKeyPlaceholder: "category",
   rootFolder: "Root folder",
   rootFolderDesc: "Append this path to the folder set by the frontmatter key.",
+  useFrontmatterTitle: "Set the title from the frontmatter",
+  useFrontmatterTitleDesc: 'Use a frontmatter value to generate the filename. By default, "title" is used.',
   textConversion: "Content's conversion",
   textConversionDesc: "Theses option won't change the content of the file in your Obsidian Vault, but will change the content of the file in Github.",
   textHeader: "Text",
@@ -501,8 +505,6 @@ var en_us_default = {
   hardBreakDesc: 'Add a markdown hard line break (double whitespace) after each line. This settings can be overridden by the frontmatter key "hardbreak".',
   headerDataview: "Dataview",
   headerDataviewDesc: 'Convert dataview to markdown. This settings can be overridden by the frontmatter key "dataview".',
-  useFrontmatterTitle: "Use frontmatter title",
-  useFrontmatterTitleDesc: 'Use frontmatter "title" field instead of the file name.',
   censorTextHeader: "Text replacer",
   censorTextDesc: "Replace text (or regex) in the file with the given value.",
   censorTextInsensitive: "Case insensitive",
@@ -524,6 +526,8 @@ var en_us_default = {
   transferEmbeddedNotesDesc: 'Send embedded notes in a shared file to github. Only shared files will be send! This option can be overridden by the frontmatter key "embed".',
   defaultImageFolder: "Default image folder",
   defaultImageFolderDesc: "To use a folder different from default",
+  transferMetaFile: "Send files using a metadata field",
+  transferMetaFileDesc: "Set the names of the metadata field you want to use to send files. Separate fields with a comma. Dataview inline field are supported.",
   githubActionName: "Github action name",
   githubActionNameDesc: "If you want to activate a github action when the plugin push the file, set the name of the file (in your .github/worfklows folder).",
   autoCleanUp: "Auto clean up",
@@ -556,7 +560,8 @@ var en_us_default = {
   noNewNote: "No new notes to share.",
   successfullPublish: (noticeValue) => `Successfully published ${noticeValue[0]} to ${noticeValue[1]}.`,
   waitingWorkflow: "Now, waiting for the workflow to be completed...",
-  sendMessage: (noticeValue) => `Send ${noticeValue[0]} to ${noticeValue[1]}${noticeValue[2]}`
+  sendMessage: (noticeValue) => `Send ${noticeValue[0]} to ${noticeValue[1]}${noticeValue[2]}`,
+  mergeconflic: `Pull-request is not mergeable, you need to do it manually.`
 };
 
 // plugin/i18n/locales/zh-cn.ts
@@ -709,6 +714,8 @@ var fr_fr_default = {
   frontmatterKeyPlaceholder: "cat\xE9gorie",
   rootFolder: "Dossier racine",
   rootFolderDesc: "Ajoutez ce chemin au dossier d\xE9fini par la cl\xE9 de m\xE9tadonn\xE9es.",
+  useFrontmatterTitle: "Utiliser une cl\xE9 de m\xE9tadonn\xE9es pour le titre",
+  useFrontmatterTitleDesc: 'Utilisez un champ du frontmatter pour g\xE9n\xE9rer le nom du fichier. Par d\xE9faut "title" est utilis\xE9.',
   textConversion: "Conversion du contenu",
   textConversionDesc: "Ces options ne changent pas le contenu du fichier dans votre coffre Obsidian, mais changeront le contenu du fichier publi\xE9 sur GitHub.",
   textHeader: "Texte",
@@ -724,8 +731,6 @@ var fr_fr_default = {
   hardBreakDesc: 'Ajoutez un retour \xE0 la ligne Markdown (double espace) apr\xE8s chaque ligne. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "hardbreak".',
   headerDataview: "Dataview",
   headerDataviewDesc: 'Convertir dataview en markdown. Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "dataview".',
-  useFrontmatterTitle: 'Utiliser la cl\xE9 frontmatter "title"',
-  useFrontmatterTitleDesc: 'Utilisez le champ "title" du frontmatter (\xE0 la place du nom du fichier) pour g\xE9n\xE9rer le chemin du fichier.',
   censorTextHeader: "Replacement de texte",
   censorTextDesc: "Replacement de texte (ou regex) par un autre texte.",
   censorTextInsensitive: "Insensible \xE0 la casse.",
@@ -747,6 +752,8 @@ var fr_fr_default = {
   transferEmbeddedNotesDesc: 'Envoyez des notes transcluent dans un fichier partag\xE9 dans le d\xE9p\xF4t. Seuls les fichiers partag\xE9s seront envoy\xE9s ! Ce param\xE8tre peut \xEAtre outrepass\xE9 par la cl\xE9 de m\xE9tadonn\xE9es "embed".',
   defaultImageFolder: "Dossier d'images par d\xE9faut",
   defaultImageFolderDesc: "Pour utiliser un dossier diff\xE9rent de celui par d\xE9faut pour les images.",
+  transferMetaFile: "Envoyer des fichiers en utilisant une cl\xE9 de m\xE9tadonn\xE9e",
+  transferMetaFileDesc: "Mettez les noms des champs de m\xE9tadonn\xE9es que vous voulez utiliser pour envoyer les fichiers. S\xE9parez les champs par une virgule. Les champs Dataview sont pris en charge.",
   githubActionName: "Nom de l'action GitHub",
   githubActionNameDesc: 'Si vous souhaitez activer une action github lorsque le plugin push le fichier, indiquez le nom du fichier (dans votre dossier ".github/worfklows").',
   autoCleanUp: "Auto-nettoyage",
@@ -779,7 +786,8 @@ var fr_fr_default = {
   noNewNote: "Aucune nouvelle note \xE0 partager.",
   successfullPublish: (noticeValue) => `Publication r\xE9ussie de ${noticeValue[0]} vers ${noticeValue[1]}.`,
   waitingWorkflow: "Maintenant, attente de la compl\xE9tion du workflow...",
-  sendMessage: (noticeValue) => `Envoi de ${noticeValue[0]} \xE0 ${noticeValue[1]}${noticeValue[2]}.`
+  sendMessage: (noticeValue) => `Envoi de ${noticeValue[0]} \xE0 ${noticeValue[1]}${noticeValue[2]}.`,
+  mergeconflic: `La pull-request n'est pas fusionnable, vous avez besoin de le faire manuellement.`
 };
 
 // plugin/i18n/locales/ru.ts
@@ -916,7 +924,7 @@ function openDetails(groupName, detailsState) {
     }
   }
 }
-var MkdocsSettingsTab = class extends import_obsidian2.PluginSettingTab {
+var GithubPublisherSettings = class extends import_obsidian2.PluginSettingTab {
   constructor(app2, plugin) {
     super(app2, plugin);
     this.plugin = plugin;
@@ -992,12 +1000,21 @@ var MkdocsSettingsTab = class extends import_obsidian2.PluginSettingTab {
         yield this.plugin.saveSettings();
       }));
     });
-    new import_obsidian2.Setting(this.containerEl).setName(t("useFrontmatterTitle")).setDesc(t("useFrontmatterTitleDesc")).addToggle((toggle) => {
+    const frontmatterTitleSet = new import_obsidian2.Setting(this.containerEl).setName(t("useFrontmatterTitle")).setDesc(t("useFrontmatterTitleDesc")).addToggle((toggle) => {
       toggle.setValue(this.plugin.settings.useFrontmatterTitle).onChange((value) => __async(this, null, function* () {
         this.plugin.settings.useFrontmatterTitle = value;
         yield this.plugin.saveSettings();
+        this.display();
       }));
     });
+    if (this.plugin.settings.useFrontmatterTitle) {
+      frontmatterTitleSet.addText((text) => {
+        text.setPlaceholder("title").setValue(this.plugin.settings.frontmatterTitleKey).onChange((value) => __async(this, null, function* () {
+          this.plugin.settings.frontmatterTitleKey = value.trim();
+          yield this.plugin.saveSettings();
+        }));
+      });
+    }
     containerEl.createEl("h3", { text: t("textConversion") });
     containerEl.createEl("span", { text: t("textConversionDesc") });
     containerEl.createEl("h5", { text: t("textHeader") });
@@ -1095,6 +1112,12 @@ var MkdocsSettingsTab = class extends import_obsidian2.PluginSettingTab {
       toggle.setValue(this.plugin.settings.embedImage).onChange((value) => __async(this, null, function* () {
         this.plugin.settings.embedImage = value;
         shortcutsHideShow(value, settingsDefaultImage);
+        yield this.plugin.saveSettings();
+      }));
+    });
+    new import_obsidian2.Setting(containerEl).setName(t("transferMetaFile")).setDesc(t("transferMetaFileDesc")).addTextArea((text) => {
+      text.setPlaceholder("banner").setValue(this.plugin.settings.metadataFileFields.join(",")).onChange((value) => __async(this, null, function* () {
+        this.plugin.settings.metadataFileFields = value.split(",").map((field) => field.trim());
         yield this.plugin.saveSettings();
       }));
     });
@@ -1197,8 +1220,8 @@ function getDataviewPath(markdown, settings, vault) {
     return [];
   if (wikiMatches) {
     for (const wikiMatch of wikiMatches) {
-      const altText = wikiMatch[1].replace(/(.*)\|/i, "");
-      const linkFrom = wikiMatch[1].replace(/\|(.*)/, "");
+      const altText = wikiMatch[1].replace(/(.*)\\?\|/i, "");
+      const linkFrom = wikiMatch[1].replace(/\\?\|(.*)/, "");
       const linked = vault.getAbstractFileByPath(linkFrom) instanceof import_obsidian3.TFile ? vault.getAbstractFileByPath(linkFrom) : null;
       if (linked) {
         linkedFiles.push({
@@ -1231,6 +1254,7 @@ function createRelativePath(sourceFile, targetFile, metadata, settings, vault) {
     }
     return relativePath;
   };
+  console.log(diffTarget(diffSourcePath).concat(diffTargetPath).join("/"));
   return diffTarget(diffSourcePath).concat(diffTargetPath).join("/");
 }
 function folderNoteIndex(file, vault, settings) {
@@ -1256,7 +1280,7 @@ function createObsidianPath(file, settings, vault, fileName) {
   return path;
 }
 function createFrontmatterPath(file, settings, frontmatter, fileName) {
-  let path = settings.folderDefaultName.length > 0 ? settings.folderDefaultName + "/" + file.name : file.name;
+  let path = settings.folderDefaultName.length > 0 ? settings.folderDefaultName + "/" + fileName : fileName;
   let folderRoot = settings.rootFolder;
   if (folderRoot.length > 0) {
     folderRoot = folderRoot + "/";
@@ -1264,7 +1288,7 @@ function createFrontmatterPath(file, settings, frontmatter, fileName) {
   if (frontmatter && frontmatter[settings.yamlFolderKey]) {
     const category = frontmatter[settings.yamlFolderKey];
     const parentCatFolder = !category.endsWith("/") ? category.split("/").at(-1) : category.split("/").at(-2);
-    fileName = settings.folderNote && parentCatFolder === file.name.replace(".md", "") ? "index.md" : fileName;
+    fileName = settings.folderNote && parentCatFolder === fileName.replace(".md", "") ? "index.md" : fileName;
     path = folderRoot + frontmatter[settings.yamlFolderKey] + "/" + fileName;
   }
   return path;
@@ -1272,8 +1296,8 @@ function createFrontmatterPath(file, settings, frontmatter, fileName) {
 function getTitleField(frontmatter, file, settings) {
   if (!settings.useFrontmatterTitle || !frontmatter) {
     return file.name;
-  } else if (frontmatter && frontmatter["title"] && frontmatter["title"] !== file.name) {
-    return frontmatter["title"] + ".md";
+  } else if (frontmatter && frontmatter[settings.frontmatterTitleKey] && frontmatter[settings.frontmatterTitleKey] !== file.name) {
+    return frontmatter[settings.frontmatterTitleKey] + ".md";
   }
   return file.name;
 }
@@ -2403,13 +2427,94 @@ function checkIndexFiles(octokit, settings, path) {
   });
 }
 
+// plugin/contents_conversion/convertLinks.ts
+function convertWikilinks(fileContent, frontmatter, settings, linkedFiles) {
+  const convertWikilink = frontmatter.mdlinks !== void 0 ? frontmatter == null ? void 0 : frontmatter.mdlinks : settings.convertWikiLinks;
+  const imageSettings = frontmatter.image !== void 0 ? frontmatter == null ? void 0 : frontmatter.image : settings.embedImage;
+  if (!convertWikilink && (frontmatter == null ? void 0 : frontmatter.links) && imageSettings) {
+    return fileContent;
+  }
+  const wikiRegex = /!?\[\[.*?\]\]/g;
+  const wikiMatches = fileContent.match(wikiRegex);
+  if (wikiMatches) {
+    const fileRegex = /(\[\[).*?([\]|])/;
+    for (const wikiMatch of wikiMatches) {
+      const fileMatch = wikiMatch.match(fileRegex);
+      const isEmbed = wikiMatch.startsWith("!") ? "!" : "";
+      if (fileMatch) {
+        let linkCreator = wikiMatch;
+        const fileName = fileMatch[0].replaceAll("[", "").replaceAll("|", "").replaceAll("]", "").replaceAll("\\", "");
+        const linkedFile = linkedFiles.find((item) => item.linkFrom === fileName);
+        if (linkedFile) {
+          const altText = linkedFile.altText.length > 0 ? linkedFile.altText : linkedFile.linked.extension === "md" ? linkedFile.linked.basename : "";
+          if (convertWikilink) {
+            linkCreator = `${isEmbed}[${altText}](${encodeURI(linkedFile.linkFrom)})`;
+          }
+          if ((frontmatter == null ? void 0 : frontmatter.links) === false && linkedFile.linked.extension === "md") {
+            linkCreator = altText;
+          }
+          if (!imageSettings && linkedFile.linked.extension.match("png|jpg|jpeg|gif|svg")) {
+            linkCreator = "";
+          }
+          fileContent = fileContent.replace(wikiMatch, linkCreator);
+        } else if (!fileName.startsWith("http")) {
+          const altMatch = wikiMatch.match(/(\|).*(]])/);
+          const altCreator = fileName.split("/");
+          const altLink = creatorAltLink(altMatch, altCreator, fileName.split(".").at(-1));
+          if (convertWikilink) {
+            linkCreator = `${isEmbed}[${altLink}](${encodeURI(fileName.trim())})`;
+          }
+          if ((frontmatter == null ? void 0 : frontmatter.links) === false && fileName.trim().match("md$")) {
+            linkCreator = altLink;
+          }
+          if (!imageSettings && fileName.trim().match("(png|jpg|jpeg|gif|svg)$")) {
+            linkCreator = "";
+          }
+          fileContent = fileContent.replace(wikiMatch, linkCreator);
+        }
+      }
+    }
+  }
+  return fileContent;
+}
+function convertLinkCitation(fileContent, settings, linkedFiles, metadataCache, sourceFile, vault) {
+  if (!settings.convertForGithub) {
+    return fileContent;
+  }
+  for (const linkedFile of linkedFiles) {
+    let pathInGithub = createRelativePath(sourceFile, linkedFile, metadataCache, settings, vault).replace(".md", "");
+    if (pathInGithub.trim().length == 0) {
+      pathInGithub = getReceiptFolder(sourceFile, settings, metadataCache, vault);
+    }
+    const regexToReplace = new RegExp(`(\\[{2}${linkedFile.linkFrom}(\\\\?\\|.*)?\\]{2})|(\\[.*\\]\\(${linkedFile.linkFrom}\\))`, "g");
+    const matchedLink = fileContent.match(regexToReplace);
+    if (matchedLink) {
+      for (const link of matchedLink) {
+        const regToReplace = new RegExp(`${linkedFile.linkFrom}`);
+        const newLink = link.replace(regToReplace, pathInGithub);
+        fileContent = fileContent.replace(link, newLink);
+      }
+    }
+  }
+  return fileContent;
+}
+function creatorAltLink(altMatch, altCreator, fileExtension) {
+  if (altMatch) {
+    return altMatch[0].replace("]]", "").replace("|", "");
+  }
+  if (fileExtension === "md") {
+    return altCreator.length > 1 ? altCreator[altCreator.length - 1] : altCreator[0];
+  }
+  return "";
+}
+
 // plugin/contents_conversion/convertText.ts
 var import_obsidian6 = require("obsidian");
 var import_obsidian_dataview = __toESM(require_lib());
 function addHardLineBreak(text, settings, frontmatter) {
   try {
     text = text.replace(/^\s*\\\s*$/gmi, "<br/>");
-    const hardBreak = (frontmatter == null ? void 0 : frontmatter.hardBreak) !== void 0 ? frontmatter == null ? void 0 : frontmatter.hardBreak : settings.hardBreak;
+    const hardBreak = (frontmatter == null ? void 0 : frontmatter.hardbreak) !== void 0 ? frontmatter == null ? void 0 : frontmatter.hardbreak : settings.hardBreak;
     if (hardBreak) {
       text = text.replace(/\n/gm, "  \n");
     }
@@ -2475,9 +2580,9 @@ function dataviewExtract(fieldValue, settings) {
   }
   return null;
 }
-function convertInlineDataview(text, settings, sourceFile) {
+function convertInlineDataview(text, settings, sourceFile, app2) {
   return __async(this, null, function* () {
-    if (settings.dataviewFields.length === 0) {
+    if (settings.dataviewFields.length === 0 || !app2.plugins.enabledPlugins.has("dataview")) {
       return text;
     }
     const dvApi = (0, import_obsidian_dataview.getAPI)();
@@ -2510,8 +2615,12 @@ function convertInlineDataview(text, settings, sourceFile) {
     return text;
   });
 }
-function convertDataviewQueries(text, path, settings, vault, metadataCache, frontmatter, sourceFile) {
+function convertDataviewQueries(text, path, settings, app2, metadataCache, frontmatter, sourceFile) {
   return __async(this, null, function* () {
+    if (!app2.plugins.enabledPlugins.has("dataview")) {
+      return text;
+    }
+    const vault = app2.vault;
     let replacedText = text;
     const dataviewRegex = new RegExp("```dataview(.+?)```", "gsm");
     const dvApi = (0, import_obsidian_dataview.getAPI)();
@@ -2536,80 +2645,6 @@ function convertDataviewQueries(text, path, settings, vault, metadataCache, fron
     }
     return replacedText;
   });
-}
-function convertWikilinks(fileContent, frontmatter, settings, linkedFiles) {
-  if (!settings.convertWikiLinks && !(frontmatter == null ? void 0 : frontmatter.mdlinks) && (frontmatter == null ? void 0 : frontmatter.links)) {
-    return fileContent;
-  }
-  const wikiRegex = /!?\[\[.*?\]\]/g;
-  const wikiMatches = fileContent.match(wikiRegex);
-  if (wikiMatches) {
-    const fileRegex = /(\[\[).*?([\]|])/;
-    for (const wikiMatch of wikiMatches) {
-      const fileMatch = wikiMatch.match(fileRegex);
-      const isEmbed = wikiMatch.startsWith("!") ? "!" : "";
-      if (fileMatch) {
-        let linkCreator = wikiMatch;
-        const fileName = fileMatch[0].replaceAll("[", "").replaceAll("|", "").replaceAll("]", "");
-        const linkedFile = linkedFiles.find((item) => item.linkFrom === fileName);
-        if (linkedFile) {
-          const altText = linkedFile.altText.length > 0 ? linkedFile.altText : linkedFile.linked.extension === "md" ? linkedFile.linked.basename : "";
-          if (settings.convertWikiLinks || (frontmatter == null ? void 0 : frontmatter.mdlinks)) {
-            linkCreator = `${isEmbed}[${altText}](${encodeURI(linkedFile.linkFrom)})`;
-          }
-          if ((frontmatter == null ? void 0 : frontmatter.links) === false && linkedFile.linked.extension === "md") {
-            linkCreator = altText;
-          }
-          if ((frontmatter.image === false || !settings.embedImage) && linkedFile.linked.extension.match("png|jpg|jpeg|gif|svg")) {
-            linkCreator = "";
-          }
-          fileContent = fileContent.replace(wikiMatch, linkCreator);
-        } else if (!fileName.startsWith("http")) {
-          const altMatch = wikiMatch.match(/(\|).*(]])/);
-          const altCreator = fileName.split("/");
-          const altLink = creatorAltLink(altMatch, altCreator, fileName.split(".").at(-1));
-          if (settings.convertWikiLinks || (frontmatter == null ? void 0 : frontmatter.mdlinks)) {
-            linkCreator = `${isEmbed}[${altLink}](${encodeURI(fileName.trim())})`;
-          }
-          if ((frontmatter == null ? void 0 : frontmatter.links) === false && fileName.match("md$")) {
-            linkCreator = altLink;
-          }
-          if ((frontmatter.image === false || !settings.embedImage) && fileName.match("(png|jpg|jpeg|gif|svg)$")) {
-            linkCreator = "";
-          }
-          fileContent = fileContent.replace(wikiMatch, linkCreator);
-        }
-      }
-    }
-  }
-  return fileContent;
-}
-function convertLinkCitation(fileContent, settings, linkedFiles, metadataCache, sourceFile, vault) {
-  if (!settings.convertForGithub) {
-    return fileContent;
-  }
-  for (const linkedFile of linkedFiles) {
-    const pathInGithub = createRelativePath(sourceFile, linkedFile, metadataCache, settings, vault).replace(".md", "");
-    const regexToReplace = new RegExp(`(\\[{2}${linkedFile.linkFrom}(\\|.*)?\\]{2})|(\\[.*\\]\\(${linkedFile.linkFrom}\\))`, "g");
-    const matchedLink = fileContent.match(regexToReplace);
-    if (matchedLink) {
-      for (const link of matchedLink) {
-        const regToReplace = new RegExp(`${linkedFile.linkFrom}`);
-        const newLink = link.replace(regToReplace, pathInGithub);
-        fileContent = fileContent.replace(link, newLink);
-      }
-    }
-  }
-  return fileContent;
-}
-function creatorAltLink(altMatch, altCreator, fileExtension) {
-  if (altMatch) {
-    return altMatch[0].replace("]]", "").replace("|", "");
-  }
-  if (fileExtension === "md") {
-    return altCreator.length > 1 ? altCreator[altCreator.length - 1] : altCreator[0];
-  }
-  return "";
 }
 
 // plugin/src/status_bar.ts
@@ -2683,11 +2718,12 @@ var Publisher = class {
       }
       try {
         fileHistory.push(file);
-        const embedFiles = shareFiles.getEmbed(file);
-        const linkedFiles = shareFiles.getLinkedImageAndFiles(file);
+        let embedFiles = shareFiles.getSharedEmbed(file);
+        embedFiles = yield shareFiles.getMetadataLinks(file, embedFiles);
+        const linkedFiles = shareFiles.getLinkedByEmbedding(file);
         let text = yield addInlineTags(this.settings, file, this.metadataCache, this.plugin.app);
-        text = yield convertDataviewQueries(text, file.path, this.settings, this.vault, this.metadataCache, frontmatter, file);
-        text = yield convertInlineDataview(text, this.settings, file);
+        text = yield convertDataviewQueries(text, file.path, this.settings, this.plugin.app, this.metadataCache, frontmatter, file);
+        text = yield convertInlineDataview(text, this.settings, file, this.plugin.app);
         text = addHardLineBreak(text, this.settings, frontmatter);
         text = convertLinkCitation(text, this.settings, linkedFiles, this.metadataCache, file, this.vault);
         text = convertWikilinks(text, frontmatter, this.settings, linkedFiles);
@@ -2717,6 +2753,11 @@ var Publisher = class {
         throw {};
       }
       const octokit = this.octokit;
+      let msg = `PUSH NOTE : ${title}`;
+      if (path.match(/(png|jpe?g|svg|bmp|gif)$/i)) {
+        title = path.split("/")[path.split("/").length - 1];
+        msg = `PUSH IMAGE : ${title}`;
+      }
       const payload = {
         owner: this.settings.githubName,
         repo: this.settings.githubRepo,
@@ -2739,7 +2780,7 @@ var Publisher = class {
       } catch (e) {
         noticeLog("The 404 error is normal ! It means that the file does not exist yet. Don't worry \u2764\uFE0F.", this.settings);
       }
-      payload.message = `Update note ${title}`;
+      payload.message = msg;
       yield octokit.request("PUT /repos/{owner}/{repo}/contents/{path}", payload);
     });
   }
@@ -2794,6 +2835,7 @@ var Publisher = class {
 };
 
 // plugin/publishing/filesManagement.ts
+var import_obsidian_dataview2 = __toESM(require_lib());
 var FilesManagement = class extends Publisher {
   constructor(vault, metadataCache, settings, octokit, plugin) {
     super(vault, metadataCache, settings, octokit, plugin);
@@ -2824,7 +2866,7 @@ var FilesManagement = class extends Publisher {
     const shareKey = this.settings.shareKey;
     for (const file of files) {
       const fileExtension = file.extension;
-      if (fileExtension.match(/(png|jpe?g|svg|bmp|gif)$/i)) {
+      if (fileExtension.match(/(png|jpe?g|gif|bmp|svg|mp[34]|webm|wav|m4a|ogg|3gp|flac|ogv|mov|mkv|pdf)$/i)) {
         const filepath = getImageLinkOptions(file, this.settings, null);
         allFileWithPath.push({
           converted: filepath,
@@ -2843,28 +2885,38 @@ var FilesManagement = class extends Publisher {
     }
     return allFileWithPath;
   }
-  getLinkedImageAndFiles(file) {
-    const linkedFiles = this.getEmbedFiles(file);
+  getLinkedByEmbedding(file) {
+    const linkedFiles = this.getLinkedFiles(file);
     const imageEmbedded = this.metadataCache.getFileCache(file).embeds;
     if (imageEmbedded != void 0) {
       for (const image of imageEmbedded) {
         try {
           const imageLink = this.metadataCache.getFirstLinkpathDest(image.link, file.path);
-          const imageExt = imageLink.extension;
-          if (imageExt.match(/(png|jpe?g|svg|bmp|gif|md)$/i)) {
-            linkedFiles.push({
-              linked: imageLink,
-              linkFrom: image.link,
-              altText: image.displayText
-            });
+          if (imageLink !== null) {
+            if (imageLink.extension === "md") {
+              const checkFrontmatter = this.metadataCache.getCache(imageLink.path).frontmatter;
+              if (checkFrontmatter && checkFrontmatter[this.settings.shareKey] === true) {
+                linkedFiles.push({
+                  linked: imageLink,
+                  linkFrom: image.link,
+                  altText: image.displayText
+                });
+              }
+            } else {
+              linkedFiles.push({
+                linked: imageLink,
+                linkFrom: image.link,
+                altText: image.displayText
+              });
+            }
           }
         } catch (e) {
         }
       }
     }
-    return linkedFiles;
+    return [...new Set(linkedFiles)];
   }
-  getEmbedFiles(file) {
+  getLinkedFiles(file) {
     const embedCaches = this.metadataCache.getCache(file.path).links;
     const embedList = [];
     if (embedCaches != void 0) {
@@ -2872,24 +2924,22 @@ var FilesManagement = class extends Publisher {
         try {
           const linkedFile = this.metadataCache.getFirstLinkpathDest(embedCache.link, file.path);
           if (linkedFile) {
-            if (linkedFile.extension === "md") {
-              embedList.push({
-                linked: linkedFile,
-                linkFrom: embedCache.link,
-                altText: embedCache.displayText
-              });
-            }
+            embedList.push({
+              linked: linkedFile,
+              linkFrom: embedCache.link,
+              altText: embedCache.displayText
+            });
           }
         } catch (e) {
           noticeLog(e, this.settings);
           noticeLog("Error with this links : " + embedCache.link, this.settings);
         }
       }
-      return embedList;
+      return [...new Set(embedList)];
     }
     return [];
   }
-  getEmbed(file) {
+  getSharedEmbed(file) {
     const embedCaches = this.metadataCache.getCache(file.path).embeds;
     const frontmatterSourceFile = this.metadataCache.getFileCache(file).frontmatter;
     const imageList = [];
@@ -2897,22 +2947,13 @@ var FilesManagement = class extends Publisher {
       for (const embed of embedCaches) {
         try {
           const imageLink = this.metadataCache.getFirstLinkpathDest(embed.link, file.path);
-          const transferImage = frontmatterSourceFile.image !== void 0 ? frontmatterSourceFile.image : this.settings.embedImage;
-          if (imageLink.name.match(/(png|jpe?g|svg|bmp|gif)$/i) && transferImage) {
-            imageList.push(imageLink);
-          } else if (imageLink.extension === "md") {
-            const sharedKey = this.settings.shareKey;
-            const frontmatter = this.metadataCache.getFileCache(imageLink).frontmatter;
-            if (frontmatter && frontmatter[sharedKey] && !this.checkExcludedFolder(imageLink) && transferImage) {
-              imageList.push(imageLink);
-            }
-          }
+          imageList.push(this.imageSharedOrNote(imageLink, frontmatterSourceFile));
         } catch (e) {
           noticeLog(e, this.settings);
           noticeLog("Error with this file : " + embed.displayText, this.settings);
         }
       }
-      return imageList;
+      return [...new Set(imageList)].filter((x) => x !== null);
     }
     return [];
   }
@@ -2978,6 +3019,56 @@ var FilesManagement = class extends Publisher {
     }
     return newFiles;
   }
+  getImageByPath(path, field, frontmatterSourceFile) {
+    if (field.constructor.name === "Link") {
+      field = field.path;
+    }
+    if (path.constructor.name === "Link") {
+      path = path.path;
+    }
+    const imageLink = this.metadataCache.getFirstLinkpathDest(field, path);
+    if (imageLink !== null) {
+      return this.imageSharedOrNote(imageLink, frontmatterSourceFile);
+    }
+    return null;
+  }
+  imageSharedOrNote(file, frontmatterSourceFile) {
+    const transferImage = frontmatterSourceFile.image !== void 0 ? frontmatterSourceFile.image : this.settings.embedImage;
+    if (file.extension.match(/(png|jpe?g|gif|bmp|svg|mp[34]|webm|wav|m4a|ogg|3gp|flac|ogv|mov|mkv|pdf)/i) && transferImage) {
+      return file;
+    }
+    return file;
+  }
+  getMetadataLinks(file, embedFiles) {
+    return __async(this, null, function* () {
+      const frontmatterSourceFile = this.metadataCache.getFileCache(file).frontmatter;
+      for (const field of this.settings.metadataFileFields) {
+        if (frontmatterSourceFile[field] != void 0) {
+          const imageLink = this.metadataCache.getFirstLinkpathDest(frontmatterSourceFile[field], file.path);
+          if (imageLink !== null) {
+            embedFiles.push(this.imageSharedOrNote(file, frontmatterSourceFile));
+          }
+        }
+      }
+      if (this.plugin.app.plugins.enabledPlugins.has("dataview")) {
+        const dvApi = (0, import_obsidian_dataview2.getAPI)();
+        const dataviewMetadata = yield dvApi.page(file.path);
+        for (const field of this.settings.metadataFileFields) {
+          const fieldValue = dataviewMetadata[field];
+          if (fieldValue != void 0) {
+            if (fieldValue.constructor.name === "Array") {
+              for (const value of fieldValue) {
+                embedFiles.push(this.getImageByPath(value, fieldValue, frontmatterSourceFile));
+              }
+            } else {
+              embedFiles.push(this.getImageByPath(fieldValue, fieldValue, frontmatterSourceFile));
+            }
+          }
+        }
+      }
+      return [...new Set(embedFiles)].filter((x) => x != null);
+    });
+  }
   getEditedFiles(allFileWithPath, githubSharedFiles, vault, newFiles) {
     return __async(this, null, function* () {
       for (const file of allFileWithPath) {
@@ -3000,6 +3091,7 @@ var FilesManagement = class extends Publisher {
 };
 
 // plugin/publishing/branch.ts
+var import_obsidian9 = require("obsidian");
 var GithubBranch = class extends FilesManagement {
   constructor(settings, octokit, vault, metadataCache, plugin) {
     super(vault, metadataCache, settings, octokit, plugin);
@@ -3083,6 +3175,9 @@ var GithubBranch = class extends FilesManagement {
         commit_title: `[PUBLISHER] Merge #${pullRequestNumber}`,
         merge_method: "squash"
       });
+      if (branch.status === 405) {
+        new import_obsidian9.Notice(t("mergeconflic"));
+      }
       return branch.status === 200;
     });
   }
@@ -3097,7 +3192,7 @@ var GithubBranch = class extends FilesManagement {
 };
 
 // plugin/commands.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 function shareAllMarkedNotes(PublisherManager, settings, octokit, statusBarItems, branchName, sharedFiles, createGithubBranch = true) {
   return __async(this, null, function* () {
     try {
@@ -3115,7 +3210,7 @@ function shareAllMarkedNotes(PublisherManager, settings, octokit, statusBarItems
             yield PublisherManager.publish(file, false, branchName);
           } catch (e) {
             errorCount++;
-            new import_obsidian9.Notice(t("unablePublishNote")(sharedFiles[files].name));
+            new import_obsidian10.Notice(t("unablePublishNote")(sharedFiles[files].name));
           }
         }
         statusBar.finish(8e3);
@@ -3125,19 +3220,19 @@ function shareAllMarkedNotes(PublisherManager, settings, octokit, statusBarItems
         if (update) {
           yield noticeMessage(PublisherManager, noticeValue, settings);
         } else {
-          new import_obsidian9.Notice(t("errorPublish")(settings.githubRepo));
+          new import_obsidian10.Notice(t("errorPublish")(settings.githubRepo));
         }
       }
     } catch (error) {
       console.error(error);
-      new import_obsidian9.Notice(t("unablePublishMultiNotes"));
+      new import_obsidian10.Notice(t("unablePublishMultiNotes"));
     }
   });
 }
 function deleteUnsharedDeletedNotes(PublisherManager, settings, octokit, branchName) {
   return __async(this, null, function* () {
     try {
-      new import_obsidian9.Notice(t("startingClean")(settings.githubRepo));
+      new import_obsidian10.Notice(t("startingClean")(settings.githubRepo));
       yield PublisherManager.newBranch(branchName);
       yield deleteFromGithub(false, settings, octokit, branchName, PublisherManager);
       yield PublisherManager.updateRepository(branchName);
@@ -3157,13 +3252,13 @@ function shareOneNote(branchName, PublisherManager, settings, file, metadataCach
           yield noticeMessage(PublisherManager, file, settings);
           yield createLink(file, settings, metadataCache, vault);
         } else {
-          new import_obsidian9.Notice(t("errorPublish")(settings.githubRepo));
+          new import_obsidian10.Notice(t("errorPublish")(settings.githubRepo));
         }
       }
     } catch (error) {
       if (!(error instanceof DOMException)) {
         console.error(error);
-        new import_obsidian9.Notice(t("errorPublish")(settings.githubRepo));
+        new import_obsidian10.Notice(t("errorPublish")(settings.githubRepo));
       }
     }
   });
@@ -3171,70 +3266,70 @@ function shareOneNote(branchName, PublisherManager, settings, file, metadataCach
 function shareNewNote(PublisherManager, octokit, branchName, vault, plugin) {
   return __async(this, null, function* () {
     const settings = plugin.settings;
-    new import_obsidian9.Notice(t("scanningRepo"));
+    new import_obsidian10.Notice(t("scanningRepo"));
     const branchMaster = yield PublisherManager.getMasterBranch();
     const sharedFilesWithPaths = PublisherManager.getAllFileWithPath();
     const githubSharedNotes = yield PublisherManager.getAllFileFromRepo(branchMaster, octokit, settings);
     const newlySharedNotes = PublisherManager.getNewFiles(sharedFilesWithPaths, githubSharedNotes, vault);
     if (newlySharedNotes.length > 0) {
-      new import_obsidian9.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
+      new import_obsidian10.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
       const statusBarElement = plugin.addStatusBarItem();
       yield PublisherManager.newBranch(branchName);
       yield shareAllMarkedNotes(PublisherManager, plugin.settings, octokit, statusBarElement, branchName, newlySharedNotes);
     } else {
-      new import_obsidian9.Notice(t("noNewNote"));
+      new import_obsidian10.Notice(t("noNewNote"));
     }
   });
 }
 function shareAllEditedNotes(PublisherManager, octokit, branchName, vault, plugin) {
   return __async(this, null, function* () {
     const settings = plugin.settings;
-    new import_obsidian9.Notice(t("scanningRepo"));
+    new import_obsidian10.Notice(t("scanningRepo"));
     const branchMaster = yield PublisherManager.getMasterBranch();
     const sharedFilesWithPaths = PublisherManager.getAllFileWithPath();
     const githubSharedNotes = yield PublisherManager.getAllFileFromRepo(branchMaster, octokit, settings);
     const newSharedFiles = PublisherManager.getNewFiles(sharedFilesWithPaths, githubSharedNotes, vault);
     const newlySharedNotes = yield PublisherManager.getEditedFiles(sharedFilesWithPaths, githubSharedNotes, vault, newSharedFiles);
     if (newlySharedNotes.length > 0) {
-      new import_obsidian9.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
+      new import_obsidian10.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
       const statusBarElement = plugin.addStatusBarItem();
       yield PublisherManager.newBranch(branchName);
       yield shareAllMarkedNotes(PublisherManager, settings, octokit, statusBarElement, branchName, newlySharedNotes);
     } else {
-      new import_obsidian9.Notice(t("noNewNote"));
+      new import_obsidian10.Notice(t("noNewNote"));
     }
   });
 }
 function shareOnlyEdited(PublisherManager, octokit, branchName, vault, plugin) {
   return __async(this, null, function* () {
     const settings = plugin.settings;
-    new import_obsidian9.Notice(t("scanningRepo"));
+    new import_obsidian10.Notice(t("scanningRepo"));
     const branchMaster = yield PublisherManager.getMasterBranch();
     const sharedFilesWithPaths = PublisherManager.getAllFileWithPath();
     const githubSharedNotes = yield PublisherManager.getAllFileFromRepo(branchMaster, octokit, settings);
     const newSharedFiles = [];
     const newlySharedNotes = yield PublisherManager.getEditedFiles(sharedFilesWithPaths, githubSharedNotes, vault, newSharedFiles);
     if (newlySharedNotes.length > 0) {
-      new import_obsidian9.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
+      new import_obsidian10.Notice(t("foundNoteToSend")(`${newlySharedNotes.length}`));
       const statusBarElement = plugin.addStatusBarItem();
       yield PublisherManager.newBranch(branchName);
       yield shareAllMarkedNotes(PublisherManager, settings, octokit, statusBarElement, branchName, newlySharedNotes);
     } else {
-      new import_obsidian9.Notice(t("noNewNote"));
+      new import_obsidian10.Notice(t("noNewNote"));
     }
   });
 }
 
 // plugin/main.ts
-var MkdocsPublication = class extends import_obsidian10.Plugin {
+var GithubPublisher = class extends import_obsidian11.Plugin {
   onload() {
     return __async(this, null, function* () {
       console.log("Github Publisher loaded");
       yield this.loadSettings();
-      this.addSettingTab(new MkdocsSettingsTab(this.app, this));
+      this.addSettingTab(new GithubPublisherSettings(this.app, this));
       const octokit = new Octokit({ auth: this.settings.GhToken });
       const PublisherManager = new GithubBranch(this.settings, octokit, this.app.vault, this.app.metadataCache, this);
-      const branchName = app.vault.getName() + "-" + new Date().toLocaleDateString("en-US").replace(/\//g, "-");
+      const branchName = app.vault.getName().replaceAll(" ", "-") + "-" + new Date().toLocaleDateString("en-US").replace(/\//g, "-");
       this.registerEvent(this.app.workspace.on("file-menu", (menu, file) => {
         if (disablePublish(this.app, this.settings, file) && this.settings.fileMenu) {
           menu.addItem((item) => {
