@@ -13,7 +13,7 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/LAIYIGE.md",
+                "file": "README.md",
                 "mode": "source",
                 "source": false
               }
@@ -93,7 +93,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "docs/LAIYIGE.md",
+                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -110,7 +110,7 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "docs/LAIYIGE.md",
+                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               }
@@ -133,7 +133,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/LAIYIGE.md"
+                "file": "README.md"
               }
             }
           }
@@ -156,10 +156,10 @@
   },
   "active": "70de4940c608488b",
   "lastOpenFiles": [
+    "docs/LAIYIGE.md",
     "docs/README.md",
     "README.md",
     "企微商品创建.md",
-    "docs/LAIYIGE.md",
     "docs/BRAT-log.md",
     "_sidebar.md",
     "_navbar.md",
