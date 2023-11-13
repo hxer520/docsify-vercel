@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 
 <head>
   <meta charset="UTF-8">
@@ -18,8 +18,9 @@
 
 <body>
   <div id="app">loading...</div>
-  <!-- 在github上编辑插件
-  <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script> -->
+
+  <!-- 在github上编辑插件 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-edit-on-github"></script> 
   <script>
     window.$docsify = {
       basePath: '/', // 资源相对路径
@@ -50,19 +51,27 @@
         nextText: '下一章节',
         crossChapter: true,
       },
-    //   plugins: [
-    //     EditOnGithubPlugin.create(
-    //       'https://github.com/midsummer-j/VercelProject/blob/master/docs/',
-    //       null,
-    //       function (file) {
-    //         if (file.indexOf('en') === -1) {
-    //           return '在 GitHub 上编辑'
-    //         } else {
-    //           return 'Edit on Github'
-    //         }
-    //       }
-    //     )
-    //   ],
+
+
+
+      plugins: [
+        EditOnGithubPlugin.create(
+          'https://github.com/hxer520/docsify-vercel/blob/main/docs/',
+          null,
+          function (file) {
+            if (file.indexOf('en') === -1) {
+              return '在 GitHub 上编辑'
+            } else {
+              return 'Edit on Github'
+            }
+          }
+        )
+        
+      ],
+
+
+
+
       themeColor: "#42b983", // 暗黑模式主题色
       darklightTheme: {
         siteFont: "PT Sans",
@@ -120,4 +129,8 @@
 <!-- 封面渲染 -->
 <script src="//unpkg.com/docsify-pagination/dist/docsify-pagination.min.js"></script>
 <!-- 分页导航 -->
+// <!-- Valine -->
+<body>
+<!-- 评论(待更新)  -->
+
 </html>
